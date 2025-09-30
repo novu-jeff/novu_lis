@@ -6,13 +6,13 @@
     <div class="d-flex justify-content-center align-items-center mb-4 px-2 pb-3">
         <div class="text-center">
             <h2 class="fw-semibold text-dark mb-1">Ordinance</h2>
-            <p class="text-muted mb-0">View the list Ordinance</p>
+            <p class="text-muted mb-0">View the list of Ordinance</p>
         </div>
     </div>
 
+    <!-- Filter Form -->
     <div class="card">
         <div class="card-body">
-            <!-- Filter Form -->
             <form id="filterForm" class="row g-3 align-items-end justify-content-center mb-4 px-3">
                 <!-- Tags -->
                 <div class="col-md-6 col-lg-2">
@@ -67,11 +67,12 @@
                     <th>#</th>
                     <th>Title</th>
                     <th>Author</th>
-                    <th>File</th>
+                    <th>File(s)</th>
                     <th>Tags</th>
+                    <th>Sections</th>
                 </tr>
             </thead>
-            <tbody id="membersContainer"></tbody>
+            <tbody id="documentsContainer"></tbody>
         </table>
         <p id="noDataMessage" class="text-muted text-center" style="display: none;">No data found.</p>
     </div>
@@ -80,80 +81,119 @@
 
 @section('scripts')
 <script>
-    const BASE_URL = @json(config('app.dms_url'));
-    const token = @json(config('app.dms_token'));
-    const BASE_STORAGE_URL = @json(config('app.dms_storage_url'));
-    
 
-    $(document).ready(function () {
-        $('#filterButton').on('click', function (e) {
-            e.preventDefault();
-            loadData();
-        });
-    });
+    let currentPage = 1;
+    let lastPage = 1;
+    const BASE_URL = @json(config('app.dms_url')); // example: http://127.0.0.1:8000
+    const STORAGE_URL = @json(config('app.dms_storage_url', '')); // optional if you store files separately
 
-    function loadData() {
+    function loadDocuments(page = 1) {
         const formData = $('#filterForm').serializeArray();
-        formData.push({ name: 'type', value: 3 });
+        formData.push({ name: 'type', value: 3 }); // Add fixed type filter if needed
+        formData.push({ name: 'page', value: page }); // add page
 
         const queryParams = new URLSearchParams(formData.map(item => [item.name, item.value]));
+        const endpoint = `${BASE_URL}/api/getdocuments?${queryParams.toString()}`;
 
-        axios.get(`${BASE_URL}/api/documents?${queryParams.toString()}`, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        })
-        .then(response => {
-            const documents = response.data.data;
-            console.log(documents[0]);
-            const container = document.getElementById('membersContainer');
-            const noData = document.getElementById('noDataMessage');
+       // console.log("Requesting:", endpoint);
 
-            container.innerHTML = '';
+        axios.get(endpoint)
+            .then(response => {
+                const documents = response.data.data;
+                currentPage = response.data.current_page;
+                lastPage = response.data.last_page;
 
-            if (!documents || documents.length === 0) {
-                noData.style.display = 'block';
-                return;
-            }
-
-            noData.style.display = 'none';
-
-            documents.forEach((doc, index) => {
-                let filesHtml = '-';
-                if (doc.files && doc.files.length > 0) {
-                    filesHtml = doc.files.map(file => {
-                        return `<a href="#" onclick="openFile('${BASE_STORAGE_URL}/storage/${file.file_path}')" style="color:blue">${file.file_name}</a><br/>`;
-                    }).join('');
-                }
-
-                const branchDesc = doc.branch?.description || '-';
-                const deptDesc = doc.department?.description || '-';
-                const divDesc = doc.division?.description || '-';
-
-                const row = `
-                    <tr>
-                        <td>${index + 1}</td>
-                        <td>${doc.title || 'Untitled'}</td>
-                        <td>${doc.author || '-'}</td>
-                        <td>${filesHtml}</td>
-                        <td>
-                            <span class="fw-bold">Branch:</span> ${branchDesc}<br />
-                            <span class="fw-bold">Department:</span> ${deptDesc}<br />
-                            <span class="fw-bold">Division:</span> ${divDesc}
-                        </td>
-                    </tr>
-                `;
-
-                container.insertAdjacentHTML('beforeend', row);
+                renderDocuments(documents);
+                renderPagination();
+            })
+            .catch(error => {
+                console.error('Failed to load documents:', error);
+                $('#documentsContainer').html('');
+                $('#noDataMessage').show();
             });
-        })
-        .catch(error => {
-            console.error('Failed to load documents:', error);
+    }
+
+    function renderDocuments(documents) {
+        const container = document.getElementById('documentsContainer');
+        const noData = document.getElementById('noDataMessage');
+
+        container.innerHTML = '';
+
+        if (!documents || documents.length === 0) {
+            noData.style.display = 'block';
+            return;
+        }
+
+        noData.style.display = 'none';
+
+        documents.forEach((doc, index) => {
+            // Build file links
+            let filesHtml = '-';
+            if (doc.files && doc.files.length > 0) {
+                filesHtml = doc.files.map(file => {
+                    const filePath = STORAGE_URL ? `${STORAGE_URL}/storage/${file.file_path}` : file.file_path;
+                    return `<a href="${filePath}" target="_blank" style="color:blue">${file.file_name}</a><br/>`;
+                }).join('');
+            }
+
+            const branchDesc = doc.branch?.description || '-';
+            const deptDesc = doc.department?.description || '-';
+            const divDesc = doc.division?.description || '-';
+
+            // Build row
+            const row = `
+                <tr>
+                    <td>${index + 1}</td>
+                    <td>${doc.title || 'Untitled'}</td>
+                    <td>${doc.author || '-'}</td>
+                    <td>${filesHtml}</td>
+                    <td>${doc.tags || '-'}</td>
+                    <td>
+                        Branch: ${branchDesc}<br/>
+                        Department: ${deptDesc}<br/>
+                        Division: ${divDesc}
+                    </td>
+                </tr>
+            `;
+
+            container.insertAdjacentHTML('beforeend', row);
         });
     }
-    function openFile(filePath) {
-        if (!filePath) return;
-        window.open(filePath, '_blank');
+
+    function renderPagination() {
+        let paginationContainer = document.getElementById('paginationContainer');
+        if (!paginationContainer) {
+            // create pagination container if it doesn't exist
+            paginationContainer = document.createElement('div');
+            paginationContainer.id = 'paginationContainer';
+            paginationContainer.className = 'mt-3 d-flex justify-content-center';
+            document.querySelector('.table-responsive').appendChild(paginationContainer);
+        }
+
+        let html = '';
+
+        if (currentPage > 1) {
+            html += `<button class="btn btn-sm btn-primary me-2" onclick="loadDocuments(${currentPage - 1})">Previous</button>`;
+        }
+
+        html += `<span class="align-self-center">Page ${currentPage} of ${lastPage}</span>`;
+
+        if (currentPage < lastPage) {
+            html += `<button class="btn btn-sm btn-primary ms-2" onclick="loadDocuments(${currentPage + 1})">Next</button>`;
+        }
+
+        paginationContainer.innerHTML = html;
     }
+
+    $(document).ready(function () {
+        // Load data when Search button is clicked
+        $('#filterButton').on('click', function (e) {
+            e.preventDefault();
+            loadDocuments();
+        });
+
+        // Auto-load all documents on page load
+        loadDocuments();
+    });
 </script>
 @endsection

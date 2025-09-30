@@ -24,7 +24,7 @@
 @section('scripts')
 <script>
     const BASE_URL = @json($api);
-
+    console.log('BASE_URL:', BASE_URL);
     $(document).ready(function () {
         loadData();
     });
@@ -50,6 +50,7 @@
 
                     const card = `
                         <div class="${columnClass}  d-flex justify-content-center mb-4">
+                            <a href="/members/${member.id}" class="text-decoration-none text-dark">
                             <div class="card-container" style="max-width:220px">
                                 <img src="${BASE_URL}/storage/${member.image_path || 'https://photostylelab.com/wp-content/uploads/2025/06/smooth-image-high-style-sample.jpeg'}" alt="" class="img-fluid">
                                 <div class="card-content">
@@ -57,6 +58,7 @@
                                     <div class="position">${member.position}</div>
                                 </div>
                             </div>
+                        </a>
                         </div>
                     `;
                     container.insertAdjacentHTML('beforeend', card);

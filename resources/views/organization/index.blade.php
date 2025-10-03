@@ -22,9 +22,8 @@
 <!-- OrgChart JS CDN -->
 <script src="https://cdn.balkan.app/orgchart.js"></script>
 
-<!-- Custom Script -->
 <script>
-    const BASE_URL = @json($api); // Ensure this contains the base API URL
+    const BASE_URL = @json($api);
 
     $(document).ready(function () {
         axios.get(`${BASE_URL}/api/organization`)
@@ -38,14 +37,33 @@
                     return;
                 }
 
+                // 👇 Extend "olivia" template tooltip
+                OrgChart.templates.olivia.tooltip =
+                    "<div style='padding:10px; max-width:220px; background:#fff; border:1px solid #ddd; border-radius:10px; box-shadow:0 4px 10px rgba(0,0,0,0.15);'>" +
+                        "<div style='display:flex; align-items:center; gap:10px;'>" +
+                            "<img src='{valImg}' style='width:50px; height:50px; border-radius:50%; object-fit:cover; border:1px solid #ccc;' />" +
+                            "<div>" +
+                                "<div style='font-weight:bold; color:#333;'>{valName}</div>" +
+                                "<div style='font-size:13px; color:#777;'>{valPos}</div>" +
+                            "</div>" +
+                        "</div>" +
+                    "</div>";
+
+                // 👇 Map nodes
                 const nodes = orgData.map(item => ({
                     id: item.id,
                     pid: item.parent_id ?? undefined,
                     name: item.name,
                     position: item.position,
-                    img: item.image_path ? `${BASE_URL}/storage/${item.image_path}` : 'https://cdn.balkan.app/shared/2.jpg'
+                    img: item.image_path ? `${BASE_URL}/storage/${item.image_path}` : 'https://cdn.balkan.app/shared/2.jpg',
+
+                    // values for tooltip
+                    valImg: item.image_path ? `${BASE_URL}/storage/${item.image_path}` : 'https://cdn.balkan.app/shared/2.jpg',
+                    valName: item.name,
+                    valPos: item.position
                 }));
 
+                // 👇 Initialize OrgChart
                 const chart = new OrgChart(document.getElementById("orgchart-container"), {
                     template: "olivia",
                     enableDragDrop: false,
@@ -53,11 +71,17 @@
                     nodeBinding: {
                         field_0: "name",
                         field_1: "position",
-                        img_0: "img"
+                        img_0: "img",
+
+                        // 🔑 bind tooltip placeholders
+                        tooltip: "tooltip",
+                        valImg: "valImg",
+                        valName: "valName",
+                        valPos: "valPos"
                     },
                     nodes: nodes,
-                    nodeMenu: null, // Disable right-click menu
-                    nodeMouseClick: OrgChart.action.none // Disable click events
+                    nodeMenu: null,
+                    nodeMouseClick: OrgChart.action.none
                 });
             })
             .catch(function (error) {
@@ -69,3 +93,5 @@
     });
 </script>
 @endsection
+
+

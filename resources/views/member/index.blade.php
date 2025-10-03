@@ -6,7 +6,7 @@
     <div class="d-flex justify-content-center align-items-center mb-4 px-2 pb-3 border-bottom">
         <div class="text-center">
             <h2 class="fw-semibold text-dark mb-1">Members</h2>
-            <p class="text-muted mb-0">View the list of Members</p>
+            <p class="text-muted mb-0">View the list of Membersss</p>
         </div>
     </div>
 

@@ -6,7 +6,7 @@
         </div>
         <div class="dropdown d-none d-lg-block">
             <a class="nav-link text-white text-capitalize" href="" role="button">
-                Legislative Information System
+                Novulutions, Inc.
             </a>
 
         </div>

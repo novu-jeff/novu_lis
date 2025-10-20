@@ -6,7 +6,7 @@
     <div class="d-flex justify-content-center align-items-center mb-4 px-2 pb-3 border-bottom">
         <div class="text-center">
             <h2 class="fw-semibold text-dark mb-1">Members</h2>
-            <p class="text-muted mb-0">View the list of Members</p>
+            <p class="text-muted mb-0">View the list of Membersss</p>
         </div>
     </div>
 
@@ -24,7 +24,7 @@
 @section('scripts')
 <script>
     const BASE_URL = @json($api);
-
+    console.log('BASE_URL:', BASE_URL);
     $(document).ready(function () {
         loadData();
     });
@@ -50,6 +50,7 @@
 
                     const card = `
                         <div class="${columnClass}  d-flex justify-content-center mb-4">
+                            <a href="/members/${member.id}" class="text-decoration-none text-dark">
                             <div class="card-container" style="max-width:220px">
                                 <img src="${BASE_URL}/storage/${member.image_path || 'https://photostylelab.com/wp-content/uploads/2025/06/smooth-image-high-style-sample.jpeg'}" alt="" class="img-fluid">
                                 <div class="card-content">
@@ -57,6 +58,7 @@
                                     <div class="position">${member.position}</div>
                                 </div>
                             </div>
+                        </a>
                         </div>
                     `;
                     container.insertAdjacentHTML('beforeend', card);

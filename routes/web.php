@@ -53,5 +53,7 @@ Route::get('/executive-order', function () {
     return view('reports.executive-order.index');
 })->name('executive-order.index');
 
+Route::get('/members/{id}', [MemberController::class, 'show'])->name('members.show');
+
 
 Route::get('api/org-chart/members', [OrganizationController::class, 'loadNodes']);

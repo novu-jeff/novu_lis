@@ -17,4 +17,14 @@ class MemberController extends Controller
         $api = config('app.api_url');
         return view('member.index', compact('api'));
     }
+
+    public function show($id)
+    {
+        $member = Member::findOrFail($id);
+        $api = config('app.api_url');
+        
+        return view('member.show', compact('member', 'api'));
+    }
+
+
 }

@@ -417,3 +417,30 @@ aside {
         }
     }
 }
+
+.cta-item .card {
+    transition: all 0.3s ease;
+    border-radius: 12px;
+}
+
+.cta-item .card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+}
+
+.cta-item .card-body img {
+    transition: transform 0.3s ease;
+}
+
+.cta-item .card:hover .card-body img {
+    transform: scale(1.1) rotate(3deg);
+}
+
+.cta-item .btn {
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.cta-item .card:hover .btn {
+    background-color: #0d6efd; /* Bootstrap primary */
+    transform: scale(1.05);
+}

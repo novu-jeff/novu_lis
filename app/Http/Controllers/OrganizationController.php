@@ -18,4 +18,6 @@ class OrganizationController extends Controller
         $api = config('app.api_url');
         return view('organization.index', compact('api'));
     }
+
+     
 }

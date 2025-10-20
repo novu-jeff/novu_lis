@@ -28,6 +28,7 @@
         loadData();
     });
      function loadData() {
+        console.log('Loading data from:', `${BASE_URL}/api/barangay-officials`);
         axios.get(`${BASE_URL}/api/barangay-officials`)
             .then(response => {
                 const members = response.data.data;

@@ -12,7 +12,8 @@ class BarangayController extends Controller
     public function index()
     {
         $api = config('app.api_url');
-        return view('barangay.index', compact('api'));
+        $barangays = \App\Models\Barangay::orderBy('name')->get();
+        return view('barangay-officials.index', compact('api','barangays'));
     }
 
     public function store(Request $request)

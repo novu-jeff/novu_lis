@@ -444,3 +444,156 @@ aside {
     background-color: #0d6efd; /* Bootstrap primary */
     transform: scale(1.05);
 }
+
+/* ========== SLICK CAROUSEL RESET & BASE ========== */
+.slick-slider {
+  position: relative;
+  display: block;
+  box-sizing: border-box;
+  user-select: none;
+  touch-action: pan-y;
+}
+
+.slick-list {
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+.slick-track {
+  display: flex;
+  align-items: center;
+}
+
+.slick-slide {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  height: 200px; /* or any fixed height */
+  overflow: hidden;
+   padding:1px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Optional hover zoom effect */
+.slick-slide:hover {
+  transform: scale(1.02);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+// .slick-slide img {
+//   width: 100%;
+//    height: 200px; 
+//    object-fit: cover; 
+//    border-radius: 8px;
+// }
+
+/* ========== IMAGE STYLE ========== */
+.slick-slide img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto !important;
+  height: auto !important;
+  object-fit: contain; /* keeps image proportion without stretching */
+  display: block;
+  border-radius: 8px;
+  transition: transform 0.4s ease;
+}
+
+/* Subtle image zoom on hover */
+.slick-slide:hover img {
+  transform: scale(1.05);
+}
+
+/* ========== RESPONSIVE BREAKPOINTS ========== */
+@media (max-width: 768px) {
+  .slick-slide {
+    height: 160px;
+  }
+}
+
+@media (max-width: 480px) {
+  .slick-slide {
+    height: 130px;
+  }
+}
+
+// executive card folder
+
+.folder-card {
+    background: white;
+    border-radius: 12px;
+    padding: 16px 10px;
+    width: 150px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.folder-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+}
+.folder-icon-wrapper {
+    position: relative;
+}
+.folder-icon-wrapper i {
+    font-size: 70px;
+    color: #007bff; /* blue folder */
+    transition: transform 0.2s ease;
+}
+.folder-card:hover i {
+    transform: scale(1.05);
+}
+
+
+.folder-card {
+    background: #f8fafc;
+    border-radius: 12px;
+    padding: 20px;
+    width: 150px;
+    height: 160px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.folder-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.folder-card.active {
+    border: 2px solid #2d6cdf; /* blue highlight */
+    background-color: #e6f0ff; /* subtle light blue */
+    transform: translateY(-3px);
+}
+
+.folder-icon-wrapper i {
+    transition: color 0.2s, transform 0.2s;
+}
+.folder-card:hover i {
+    transform: scale(1.1);
+}
+#foldersContainer {
+    max-height: 70vh;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+.folder-icon-wrapper {
+    perspective: 600px;
+    display: inline-block;
+}
+
+.folder-icon-wrapper i {
+    display: inline-block;
+    transition: transform 0.6s, color 0.3s;
+    transform-style: preserve-3d;
+    color: #2d6cdf; /* default closed folder: blue */
+}
+
+.folder-card.active .folder-icon-wrapper i {
+    transform: rotateY(180deg); /* flip */
+    color: #f0c419 !important; /* open folder: yellow */
+}
+
+
+
+
+

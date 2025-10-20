@@ -123,12 +123,12 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
-    'api_url' => env('APP_API_URL', 'http://127.0.0.1:8002'),
+    'api_url' => env('APP_API_URL', 'http://127.0.0.1:8003'),
     'dms_url' => env('DMS_API_URL', 'http://127.0.0.1:8001'),
     'dms_storage_url' => env('DMS_STORAGE_URL', 'http://127.0.0.1:8001'),
-    'dms_token' => env('DMS_TOKEN', 'http://127.0.0.1:8001/api'),
+    'dms_token' => env('DMS_TOKEN', 'http://127.0.0.1:8000/api'),
     'logo' =>  env('APP_LOGO', 'jones_logo.jfif'),
-    'client' =>  env('APP_CLIENT', 'Municipality of Jones'),
+    'client' =>  env('APP_CLIENT', 'Novulutions Inc'),
     'alias' => env('ALIAS', null)
 
 ];

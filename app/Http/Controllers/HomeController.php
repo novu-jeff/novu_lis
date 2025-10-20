@@ -23,6 +23,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $api = config('app.api_url');
+        return view('home', compact('api'));
     }
 }

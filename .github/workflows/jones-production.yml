@@ -19,28 +19,39 @@ jobs:
         uses: appleboy/ssh-action@v1.2.0
         with:
           host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}   # likely "nginxserver"
+          username: ${{ secrets.SSH_USER }}   # nginxserver
           key: ${{ secrets.SSH_KEY }}
           port: 22
           script: |
             echo "→ Starting deployment on server..."
 
+            sudo su << 'EOF'
+
             cd /var/www/html/jones
 
-            echo "→ Setting Git safe directory..."
-            git config --global --add safe.directory /var/www/html/jones
+            echo "→ Fixing ownership for git..."
+            chown -R nginxserver:www-data /var/www/html/jones /var/www/html/jones/.git
 
-            echo "→ Pulling latest code from main..."
-            git fetch origin main
-            git reset --hard origin/main
+            echo "→ Pulling latest code..."
+            sudo -u nginxserver git fetch origin main
+            sudo -u nginxserver git reset --hard origin/main
 
+            echo "→ Installing composer dependencies..."
+            composer install --no-dev --optimize-autoloader
 
-            echo "→ Optimizing Laravel..."
+            echo "→ Installing JS deps and building assets..."
+            npm install --legacy-peer-deps
+            npm run build
+
+            echo "→ Fixing Laravel permissions..."
+            chown -R www-data:www-data storage bootstrap/cache
+            chmod -R 775 storage bootstrap/cache
+
+            echo "→ Clearing & caching Laravel..."
             php artisan optimize:clear
             php artisan config:cache
             php artisan route:cache
             php artisan view:cache
-            php artisan migrate --force
-
 
             echo "✅ Deployment completed successfully!"
+            EOF

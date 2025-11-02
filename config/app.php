@@ -127,8 +127,14 @@ return [
     'dms_url' => env('DMS_API_URL', 'http://127.0.0.1:8001'),
     'dms_storage_url' => env('DMS_STORAGE_URL', 'http://127.0.0.1:8001'),
     'dms_token' => env('DMS_TOKEN', 'http://127.0.0.1:8001/api'),
+    'dms_api_token' => env('DMS_API_TOKEN', 'http://127.0.0.1:8001/api'),
     'logo' =>  env('APP_LOGO', 'jones_logo.jfif'),
     'client' =>  env('APP_CLIENT', 'Municipality of Jones'),
-    'alias' => env('ALIAS', null)
+    'alias' => env('ALIAS', null),
+
+    'dms' => [
+        'url' => env('DMS_API_URL'),
+        'token' => env('DMS_API_TOKEN'),
+    ],
 
 ];

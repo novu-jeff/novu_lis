@@ -93,7 +93,8 @@
         formData.push({ name: 'page', value: page }); // add page
 
         const queryParams = new URLSearchParams(formData.map(item => [item.name, item.value]));
-        const endpoint = `${BASE_URL}/api/getdocuments?${queryParams.toString()}`;
+        // const endpoint = `${BASE_URL}/api/getdocuments?${queryParams.toString()}`;
+        const endpoint = @json(url('/dms/getdocuments')) + `?${queryParams.toString()}`;
 
        // console.log("Requesting:", endpoint);
 

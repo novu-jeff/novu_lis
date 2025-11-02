@@ -93,15 +93,19 @@
         formData.push({ name: 'page', value: page }); // add page
 
         const queryParams = new URLSearchParams(formData.map(item => [item.name, item.value]));
-        const endpoint = `${BASE_URL}/api/getdocuments?${queryParams.toString()}`;
+        // const endpoint = `${BASE_URL}/api/getdocuments?${queryParams.toString()}`;
+        // const endpoint = `/dms/getdocuments?${queryParams.toString()}`;
+        const endpoint = @json(url('/dms/getdocuments')) + `?${queryParams.toString()}`;
 
-       // console.log("Requesting:", endpoint);
+       console.log("Requesting:", endpoint);
 
         axios.get(endpoint)
             .then(response => {
                 const documents = response.data.data;
                 currentPage = response.data.current_page;
                 lastPage = response.data.last_page;
+
+                console.log('Received documents:', response);
 
                 renderDocuments(documents);
                 renderPagination();

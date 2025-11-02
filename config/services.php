@@ -31,4 +31,9 @@ return [
         ],
     ],
 
+    'dms' => [
+        'url' => env('DMS_API_URL'),
+        'token' => env('DMS_API_TOKEN'),
+    ],
+
 ];

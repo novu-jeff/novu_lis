@@ -1,6 +1,6 @@
 <IfModule mod_rewrite.c>
-    
-    RewriteBase /buguey
+
+    RewriteBase /jones
 
     <IfModule mod_negotiation.c>
         Options -MultiViews -Indexes
@@ -12,4 +12,9 @@
     RewriteCond %{REQUEST_FILENAME} !-d
 
     RewriteRule ^ index.php [L]
+</IfModule>
+<IfModule mod_headers.c>
+    Header always set Access-Control-Allow-Origin "https://lis.novulutions.com"
+    Header always set Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
+    Header always set Access-Control-Allow-Headers "Content-Type, Authorization"
 </IfModule>

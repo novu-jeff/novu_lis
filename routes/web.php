@@ -9,6 +9,8 @@ use App\Http\Controllers\CommitteeController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\OrganizationController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\DmsProxyController;
 
 
 Route::get('/', function () {
@@ -57,3 +59,11 @@ Route::get('/members/{id}', [MemberController::class, 'show'])->name('members.sh
 
 
 Route::get('api/org-chart/members', [OrganizationController::class, 'loadNodes']);
+
+Route::options('{any}', function () {
+    Log::info('CORS preflight OK route hit');
+    return response()->json([], 200);
+})->where('any', '.*');
+
+// web.php (if called from browser as same-origin)
+Route::get('/dms/getdocuments', [\App\Http\Controllers\DmsProxyController::class, 'getDocuments']);

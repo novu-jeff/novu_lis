@@ -30,6 +30,7 @@
 <script>
     const albumId = @json($id);
     const BASE_URL = @json($api);
+    const IMAGE_BASE = @json($imageBase ?? '');
     $(document).ready(function () {
        Fancybox.bind("[data-fancybox]", {
             Image: {
@@ -83,8 +84,8 @@
                     const imageCard = `
                         <div class="col-xl-2 col-lg-3 col-md-4 col-sm-4 mb-4">
                             <div class="image position-relative">
-                                <a data-fancybox="gallery" href="${BASE_URL}/${imageUrl}">
-                                    <img src="${BASE_URL}/${imageUrl}" style="width: 100%; height: 150px; object-fit: cover; border-radius: 8px;" />
+                                <a data-fancybox="gallery" href="${IMAGE_BASE ? IMAGE_BASE + '/' + imageUrl.replace(/^\//, '') : imageUrl}">
+                                    <img src="${IMAGE_BASE ? IMAGE_BASE + '/' + imageUrl.replace(/^\//, '') : imageUrl}" style="width: 100%; height: 150px; object-fit: cover; border-radius: 8px;" />
                                 </a>
                             </div>
                         </div>

@@ -55,6 +55,24 @@
         </li>
 
         <!-- Session Meeting -->
+        @auth('member')
+        <li class="sidebar-item mt-1 {{ request()->is('session*') ? 'active' : '' }}">
+            <a class="sidebar-link pe-5" href="{{ route('sessions.index') }}">
+                <i class="fa-solid fa-handshake"></i> Upcoming Sessions
+            </a>
+        </li>
+        @endauth
+     
+        <li class="sidebar-item mt-1 {{ request()->is('live-session*') ? 'active' : '' }}">
+            <a class="sidebar-link pe-5 " href="{{ route('live.index') }}">
+                
+                    <i class="fa-solid fa-video"></i> Live Sessions
+                
+                @if(!empty($hasLiveStream) && $hasLiveStream)
+                    <span class="badge bg-danger ms-2">LIVE</span>
+                @endif
+            </a>
+        </li>
         <li class="sidebar-item mt-1 {{ request()->is('session-meeting*') ? 'active' : '' }}">
             <a class="sidebar-link pe-5" href="{{ route('session-meeting.index') }}">
                 <i class="fa-solid fa-handshake"></i> Session Meeting

@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\View;
+use App\Models\LiveSession;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,6 +21,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        View::composer('components.sidebar', function ($view) {
+            $hasLiveStream = LiveSession::where('key', 'live_session_url')
+                ->whereNotNull('value')
+                ->where('value', '!=', '')
+                ->exists();
+
+            $view->with('hasLiveStream', $hasLiveStream);
+        });
     }
 }

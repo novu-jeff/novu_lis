@@ -5,10 +5,9 @@
             <h5 class="m-0 text-capitalize">{{ Auth::user()->organization->company_name ?? '' }}</h5>
         </div>
         <div class="dropdown d-none d-lg-block">
-            <a class="nav-link text-white text-capitalize" href="" role="button">
-                Novulutions, Inc.
-            </a>
-
+            <span class="nav-link text-white small">
+                Powered by Novulutions, Inc.
+            </span>
         </div>
 
         <!-- Hamburger Links -->

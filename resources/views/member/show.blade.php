@@ -8,7 +8,7 @@
     </div>
 
     <div class="d-flex justify-content-center">
-        <img src="{{ $member->image_path  ? 'https://lis-cms.novulutions.com/jones/storage/' . $member->image_path 
+        <img src="{{ $member->image_path  ? rtrim(config('app.api_url'), '/') . '/storage/' . $member->image_path 
                 : 'https://photostylelab.com/wp-content/uploads/2025/06/smooth-image-high-style-sample.jpeg' }}"
              alt="{{ $member->name }}"
              class="img-fluid rounded shadow"

@@ -9,7 +9,10 @@ use App\Http\Controllers\CommitteeController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\OrganizationController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\WhitepaperController;
 
+
+Route::get('/whitepaper', [WhitepaperController::class, 'index'])->name('whitepaper');
 
 Route::get('/', function () {
     return view('home.home');

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Barangay;
+use App\Models\Barangays;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
@@ -12,7 +13,10 @@ class BarangayController extends Controller
     public function index()
     {
         $api = config('app.api_url');
-        return view('barangay.index', compact('api'));
+        $barangays = Barangays::all();
+        $selectedBarangayId = 5;
+        return view('barangay.index', compact('api', 'barangays', 'selectedBarangayId'));
+
     }
 
     public function store(Request $request)

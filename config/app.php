@@ -124,11 +124,18 @@ return [
     ],
 
     'api_url' => env('APP_API_URL', 'http://127.0.0.1:8002'),
+    // For server-side HTTP calls (e.g. MemberController::show). Use when CMS is on same server to avoid connection failures.
+    'api_url_internal' => env('APP_API_URL_INTERNAL', env('APP_API_URL', 'http://127.0.0.1:8002')),
     'dms_url' => env('DMS_API_URL', 'http://127.0.0.1:8001'),
     'dms_storage_url' => env('DMS_STORAGE_URL', 'http://127.0.0.1:8001'),
     'dms_token' => env('DMS_TOKEN', 'http://127.0.0.1:8001/api'),
-    'logo' =>  env('APP_LOGO', 'jones_logo.jfif'),
-    'client' =>  env('APP_CLIENT', 'Municipality of Jones'),
-    'alias' => env('ALIAS', null)
+    'logo' =>  env('APP_LOGO', 'client-logo.jpg'),
+    'client' =>  env('APP_CLIENT', 'Municipality of Buguey'),
+    'alias' => env('ALIAS', null),
+
+    'cms_url' => env('CMS_URL', env('APP_API_URL', 'http://localhost')),
+    'lis_url' => env('LIS_URL', env('APP_URL', 'http://localhost')),
+    'dms_url' => env('DMS_URL', env('DMS_API_URL', 'http://localhost')),
+    'whitepaper_product' => env('WHITEPAPER_PRODUCT', 'LIS'),
 
 ];

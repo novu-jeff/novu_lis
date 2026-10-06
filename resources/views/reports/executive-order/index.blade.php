@@ -75,6 +75,7 @@
             <tbody id="documentsContainer"></tbody>
         </table>
         <p id="noDataMessage" class="text-muted text-center" style="display: none;">No data found.</p>
+        <div id="paginationContainer" class="mt-3"></div>
     </div>
 </div>
 @endsection
@@ -84,13 +85,16 @@
 
     let currentPage = 1;
     let lastPage = 1;
+    let perPage = 10;
+    const PER_PAGE_OPTIONS = [10, 25, 50, 100];
     const BASE_URL = @json(config('app.dms_url')); // example: http://127.0.0.1:8000
     const STORAGE_URL = @json(config('app.dms_storage_url', '')); // optional if you store files separately
 
     function loadDocuments(page = 1) {
         const formData = $('#filterForm').serializeArray();
         formData.push({ name: 'type', value: 5 }); // Add fixed type filter if needed
-        formData.push({ name: 'page', value: page }); // add page
+        formData.push({ name: 'page', value: page });
+        formData.push({ name: 'per_page', value: perPage });
 
         const queryParams = new URLSearchParams(formData.map(item => [item.name, item.value]));
         const endpoint = `${BASE_URL}/api/getdocuments?${queryParams.toString()}`;
@@ -161,28 +165,35 @@
     }
 
     function renderPagination() {
-        let paginationContainer = document.getElementById('paginationContainer');
-        if (!paginationContainer) {
-            // create pagination container if it doesn't exist
-            paginationContainer = document.createElement('div');
-            paginationContainer.id = 'paginationContainer';
-            paginationContainer.className = 'mt-3 d-flex justify-content-center';
-            document.querySelector('.table-responsive').appendChild(paginationContainer);
-        }
+        const paginationContainer = document.getElementById('paginationContainer');
+        if (!paginationContainer) return;
 
-        let html = '';
-
+        const totalPages = Math.max(lastPage, 1);
+        let html = '<div class="d-flex flex-wrap align-items-center justify-content-between gap-3">';
+        html += '<div class="d-flex align-items-center gap-2">';
+        html += '<label class="text-muted small mb-0">Show</label>';
+        html += '<select id="perPageSelect" class="form-select form-select-sm" style="width: auto;">';
+        PER_PAGE_OPTIONS.forEach(n => {
+            html += `<option value="${n}" ${perPage === n ? 'selected' : ''}>${n}</option>`;
+        });
+        html += '</select>';
+        html += '<span class="text-muted small">per page</span>';
+        html += '</div>';
+        html += '<nav class="d-flex align-items-center gap-2">';
         if (currentPage > 1) {
-            html += `<button class="btn btn-sm btn-primary me-2" onclick="loadDocuments(${currentPage - 1})">Previous</button>`;
+            html += `<button type="button" class="btn btn-primary btn-sm rounded-2 px-3" onclick="loadDocuments(${currentPage - 1})">Previous</button>`;
         }
-
-        html += `<span class="align-self-center">Page ${currentPage} of ${lastPage}</span>`;
-
+        html += `<span class="px-3 py-1 text-secondary">Page ${currentPage} of ${totalPages}</span>`;
         if (currentPage < lastPage) {
-            html += `<button class="btn btn-sm btn-primary ms-2" onclick="loadDocuments(${currentPage + 1})">Next</button>`;
+            html += `<button type="button" class="btn btn-primary btn-sm rounded-2 px-3" onclick="loadDocuments(${currentPage + 1})">Next</button>`;
         }
-
+        html += '</nav></div>';
         paginationContainer.innerHTML = html;
+
+        document.getElementById('perPageSelect').addEventListener('change', function () {
+            perPage = parseInt(this.value, 10);
+            loadDocuments(1);
+        });
     }
 
     $(document).ready(function () {

@@ -6,5 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Member extends Model
 {
+      protected $connection = 'cms_mysql';
+    protected $table = 'members';
     protected $guarded = ['id', 'created_at', 'updated_at'];
 }

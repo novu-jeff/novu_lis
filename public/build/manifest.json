@@ -1,6 +1,6 @@
 {
   "resources/js/app.js": {
-    "file": "assets/app-DYm275J7.js",
+    "file": "assets/app-BVwFtQbZ.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
@@ -19,8 +19,13 @@
     "isEntry": true
   },
   "resources/sass/style.scss": {
-    "file": "assets/style-DXOd8pyk.css",
+    "file": "assets/style-DaJSD8kq.css",
     "src": "resources/sass/style.scss",
+    "isEntry": true
+  },
+  "resources/sass/whitepaper.scss": {
+    "file": "assets/whitepaper-BZ9sIQ6M.css",
+    "src": "resources/sass/whitepaper.scss",
     "isEntry": true
   }
 }

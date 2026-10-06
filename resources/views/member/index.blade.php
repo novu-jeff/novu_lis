@@ -6,7 +6,7 @@
     <div class="d-flex justify-content-center align-items-center mb-4 px-2 pb-3 border-bottom">
         <div class="text-center">
             <h2 class="fw-semibold text-dark mb-1">Members</h2>
-            <p class="text-muted mb-0">View the list of Membersss</p>
+            <p class="text-muted mb-0">View the list of Members</p>
         </div>
     </div>
 
@@ -14,7 +14,6 @@
         
     </div>
 
-    <!-- Fallback Message -->
     <div id="noDataMessage" class="text-center text-muted mt-4" style="display: none;">
         No data available.
     </div>
@@ -24,6 +23,7 @@
 @section('scripts')
 <script>
     const BASE_URL = @json($api);
+    const APP_URL = @json($appUrl ?? config('app.url'));
     console.log('BASE_URL:', BASE_URL);
     $(document).ready(function () {
         loadData();
@@ -47,15 +47,19 @@
 
                 members.forEach((member, index) => {
                     const columnClass = index === 0 ? 'col-12' : 'col-md-3 col-sm-4 col-xs-6';
+                    const memberUrl = `${APP_URL.replace(/\/$/, '')}/members/${member.id}`;
+                    const imgSrc = member.image_path
+                        ? `${BASE_URL}/storage/${member.image_path}`
+                        : 'https://photostylelab.com/wp-content/uploads/2025/06/smooth-image-high-style-sample.jpeg';
 
                     const card = `
                         <div class="${columnClass}  d-flex justify-content-center mb-4">
-                            <a href="/members/${member.id}" class="text-decoration-none text-dark">
+                            <a href="${memberUrl}" class="text-decoration-none text-dark">
                             <div class="card-container" style="max-width:220px">
-                                <img src="${BASE_URL}/storage/${member.image_path || 'https://photostylelab.com/wp-content/uploads/2025/06/smooth-image-high-style-sample.jpeg'}" alt="" class="img-fluid">
+                                <img src="${imgSrc}" alt="" class="img-fluid">
                                 <div class="card-content">
-                                    <div class="name">${member.name}</div>
-                                    <div class="position">${member.position}</div>
+                                    <div class="name">${member.name || ''}</div>
+                                    <div class="position">${member.position || ''}</div>
                                 </div>
                             </div>
                         </a>
